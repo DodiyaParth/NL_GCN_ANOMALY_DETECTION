@@ -22,8 +22,9 @@ def train(modelname,dataset,lr=0.01,logging=False,epochs=100,show_ROC=False):
         iterable=tqdm(range(epochs),desc=dataset)
     for i in iterable:
         optimizer.zero_grad()
-        feat_loss=torch.sqrt(torch.sum(torch.square(model(X)[0]-X)))
-        struct_loss=torch.sqrt(torch.sum(torch.square(model(X)[1]-Adj)))
+        Att,A=model(X)
+        feat_loss=torch.sqrt(torch.sum(torch.square(Att-X)))
+        struct_loss=torch.sqrt(torch.sum(torch.square(A-Adj)))
         loss = torch.add(torch.mul(feat_loss,0.5),torch.mul(struct_loss,0.5))
         loss.backward()
         optimizer.step()
