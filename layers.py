@@ -21,6 +21,7 @@ class NLGCN(nn.Module):
         self.conv1D=nn.Conv1d(1,1,3,padding=1)
         
     def forward(self, X):
+        self.c=nn.Parameter(torch.rand(self.channels,1))
         Av=X.matmul(self.c)
         indices_sorted=Av.argsort()
         indices_reorder=torch.sort(indices_sorted).values

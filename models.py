@@ -61,7 +61,7 @@ class Net1(torch.nn.Module):
         H = torch.relu(H)
         H  = self.conv2(H)
         H = torch.relu(H)
-        H=self.nlgcn(H)
+        #H=self.nlgcn(H)
 
         A=self.sd_conv1(H)
         A=torch.relu(A)

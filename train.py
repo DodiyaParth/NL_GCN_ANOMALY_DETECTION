@@ -14,7 +14,7 @@ from tqdm import tqdm
 def train(modelname,dataset,lr=0.01,logging=False,epochs=100,show_ROC=False):
     Adj_norm,Adj,X,labels = get_data(dataset)
     model = get_model(modelname,dataset,Adj_norm)
-    optimizer = optim.Adadelta(model.parameters(), lr=lr)
+    optimizer = optim.Adam(model.parameters(), lr=lr)
 
     loss_list=[]
     iterable=range(epochs)
