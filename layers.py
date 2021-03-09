@@ -18,7 +18,7 @@ class NLGCN(nn.Module):
         super(NLGCN, self).__init__()
         self.channels=channels
         self.c=nn.Parameter(torch.rand(channels,1))
-        self.conv1D=nn.Conv1d(1,1,3,padding=1)
+        self.conv1D=nn.Conv1d(1,1,9,padding=4)
         
     def forward(self, X):
         self.c=nn.Parameter(torch.rand(self.channels,1))
