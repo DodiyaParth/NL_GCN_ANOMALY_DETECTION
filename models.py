@@ -66,20 +66,20 @@ class Net1(torch.nn.Module):
         A=self.sd_conv1(H)
         A=torch.relu(A)
         A=self.sd_conv2(A)
-        A=torch.relu(A)
+        A=torch.sigmoid(A)
         A=self.dec2(A)
         A=torch.matmul(A,A.T)
         A=torch.sigmoid(A)
         
         H = self.dense1(H)
-        H = torch.relu(H)
+        H = torch.sigmoid(H)
         H = self.dense2(H)
-        H = torch.relu(H)
+        H = torch.sigmoid(H)
         
 
 
         Att  = self.conv3(H)
-        Att = torch.relu(Att)
+        Att = torch.sigmoid(Att)
         Att = self.conv4(Att)
         Att = torch.softmax(Att,1)
         return Att,A
