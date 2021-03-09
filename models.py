@@ -47,14 +47,14 @@ class Net1(torch.nn.Module):
         self.conv1 = GCNConv(A,nfeat, nhid1)
         self.conv2 = GCNConv(A,nhid1, nhid2)
         self.nlgcn=NLGCN(nhid2)
-        self.sd_conv1=GCNConv(A,nhid2,nhid3)
-        self.sd_conv2=GCNConv(A,nhid2,nhid2)
+        self.sd_conv1=GCNConv(A,nhid2,nhid2)
+        self.sd_conv2=GCNConv(A,nhid2,nhid3)
         self.dense1=nn.Linear(nhid2,nhid2)
         self.dense2=nn.Linear(nhid2,nhid2)
         self.conv3 = GCNConv(A,nhid2, nhid3)
         self.conv4 = GCNConv(A,nhid3, nout)
-        # self.dec2 = GCNConv(A,nhid2,nhid3)
-        self.dec2 = nn.Linear(nhid2,nhid3)
+        # self.dec2 = GCNConv(A,nhid3,nhid3)
+        self.dec2 = nn.Linear(nhid3,nhid3)
         
     def forward(self,X):
         H  = self.conv1(X)
@@ -65,9 +65,9 @@ class Net1(torch.nn.Module):
 
         A=self.sd_conv1(H)
         A=torch.relu(A)
-        # A=self.sd_conv2(A)
-        # A=torch.relu(A)
-        #A=self.dec2(A)
+        A=self.sd_conv2(A)
+        A=torch.relu(A)
+        A=self.dec2(A)
         A=torch.matmul(A,A.T)
         A=torch.sigmoid(A)
         
