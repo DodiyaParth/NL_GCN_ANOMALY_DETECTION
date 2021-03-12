@@ -2,7 +2,32 @@ import torch
 import torch.nn as nn
 import numpy as np
 from layers import *
+from train import *
 
+def get_models_dense(name):
+    if name=="DenseNet1":
+        return DenseNet1
+    elif name=="DenseNet2":
+        return DenseNet2
+    elif name=="DenseNet3":
+        return DenseNet3
+    elif name=="DenseNet4":
+        return DenseNet4
+    elif name=="DenseNet5":
+        return DenseNet5
+    elif name=="DenseNet6":
+        return DenseNet6
+    elif name=="DenseNet7":
+        return DenseNet7
+    elif name=="DenseNet8":
+        return DenseNet8
+    else:
+        raise NameError(name+" not found!")
+
+if __name__=="__main__":
+    models=["DenseNet"+str(i) for i in range(1,9)]
+    for model in models:
+        train(model,'Disney',logging=False,epochs=1)
 
 class DenseNet1(torch.nn.Module):
     def __init__(self,A, nfeat, nhid1,nhid2,nhid3, nout):

@@ -2,7 +2,24 @@ import torch
 import torch.nn as nn
 import numpy as np
 from layers import *
+from train import *
 
+def get_models_attconv(name):
+    if name=="AttConvNet1":
+        return AttConvNet1
+    elif name=="AttConvNet2":
+        return AttConvNet2
+    elif name=="AttConvNet3":
+        return AttConvNet3
+    elif name=="AttConvNet4":
+        return AttConvNet4
+    else:
+        raise NameError(name+" not found!")
+
+if __name__=="__main__":
+    models=["AttConvNet"+str(i) for i in range(1,5)]
+    for model in models:
+        train(model,'Disney',logging=False,epochs=1)
 
 class AttConvNet1(torch.nn.Module):
     def __init__(self,A, nfeat, nhid1,nhid2,nhid3, nout):
@@ -91,7 +108,7 @@ class AttConvNet3(torch.nn.Module):
         
         Att  = self.conv3(H)
         Att = torch.relu(Att)
-        Att  = self.conv3_1(H)
+        Att  = self.conv3_1(Att)
         Att = torch.relu(Att)
         Att = self.conv4(Att)
         Att = torch.softmax(Att,1)
@@ -126,9 +143,9 @@ class AttConvNet4(torch.nn.Module):
         
         Att  = self.conv3(H)
         Att = torch.relu(Att)
-        Att  = self.conv3_1(H)
+        Att  = self.conv3_1(Att)
         Att = torch.relu(Att)
-        Att  = self.conv3_2(H)
+        Att  = self.conv3_2(Att)
         Att = torch.relu(Att)
         Att = self.conv4(Att)
         Att = torch.softmax(Att,1)

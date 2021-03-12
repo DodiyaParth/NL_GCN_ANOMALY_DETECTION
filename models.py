@@ -2,6 +2,10 @@ import torch
 import torch.nn as nn
 import numpy as np
 from layers import *
+from models_attconv import *
+from models_conv import *
+from models_dense import *
+from models_nlgcn import *
 
 
 class Net(torch.nn.Module):
@@ -14,7 +18,6 @@ class Net(torch.nn.Module):
         self.dense2=nn.Linear(nhid2,nhid2)
         self.conv3 = GCNConv(A,nhid2, nhid3)
         self.conv4 = GCNConv(A,nhid3, nout)
-        # self.dec2 = GCNConv(A,nhid2,nhid3)
         self.dec2 = nn.Linear(nhid2,nhid3)
         
     def forward(self,X):
@@ -131,7 +134,7 @@ def get_model(model_name,dataset,Adj_norm):
             return Net(Adj_norm,10,7,5,7,10)
         if dataset=="Disney":
             return Net(Adj_norm,28,15,10,15,28)
-    if model_name=='N2':
+    elif model_name=='N2':
         if dataset=="Enron":
             return Net1(Adj_norm,18,15,12,15,18)
         if dataset=="Amazon":
@@ -140,7 +143,7 @@ def get_model(model_name,dataset,Adj_norm):
             return Net1(Adj_norm,10,7,5,7,10)
         if dataset=="Disney":
             return Net1(Adj_norm,28,15,10,15,28)
-    if model_name=='N3':
+    elif model_name=='N3':
         if dataset=="Enron":
             return Net2(Adj_norm,18,15,12,15,18)
         if dataset=="Amazon":
@@ -149,5 +152,23 @@ def get_model(model_name,dataset,Adj_norm):
             return Net2(Adj_norm,10,7,5,7,10)
         if dataset=="Disney":
             return Net2(Adj_norm,28,15,10,15,28)
-        
-        
+    else:
+        model=None
+        if model_name.startswith("DenseNet"):
+            model=get_models_dense(model_name)
+        elif model_name.startswith("AttConvNet"):
+            model=get_models_attconv(model_name)
+        elif model_name.startswith("ConvNet"):
+            model=get_models_conv(model_name)
+        elif model_name.startswith("NLNet"):
+            model=get_models_nlgcn(model_name)
+        else:
+            raise NameError(model+" does not exist!")
+        if dataset=="Enron":
+            return model(Adj_norm,18,15,12,15,18)
+        if dataset=="Amazon":
+            return model(Adj_norm,21,12,10,12,21)
+        if dataset=="facebook":
+            return model(Adj_norm,10,7,5,7,10)
+        if dataset=="Disney":
+            return model(Adj_norm,28,15,10,15,28)
