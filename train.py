@@ -61,7 +61,6 @@ def train(modelname,dataset,lr=0.01,logging=False,epochs=100,show_ROC=False,save
     fpr, tpr, thresholds = metrics.roc_curve(labels, diff, pos_label=None,drop_intermediate=False)
     auc_score=roc_auc_score(labels, diff)
     print(dataset+" AUC score : ",auc_score)
-    print(model)
     if saveResults:
         file_path = "Results/"+dataset+"/results.json"
         data = {}
