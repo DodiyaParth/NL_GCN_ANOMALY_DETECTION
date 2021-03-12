@@ -8,5 +8,9 @@ def test2():
     for dataset in ['Disney','Amazon','facebook','Enron']:
         train('N2',dataset,logging=False,epochs=160)
 
-test2()
+def test3():
+    for dataset in ['Disney','Amazon','facebook']:
+        train('N3',dataset,logging=False,epochs=100)
+
+test3()
 # train('N2','Enron',logging=False,epochs=10)
