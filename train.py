@@ -10,8 +10,12 @@ import matplotlib.pyplot as plt
 from preprocessing import get_data
 from models import get_model
 from tqdm import tqdm
+from os import path
+from torchsummary import summary
+import time
+import json
 
-def train(modelname,dataset,lr=0.01,logging=False,epochs=100,show_ROC=False):
+def train(modelname,dataset,lr=0.01,logging=False,epochs=100,show_ROC=False,saveResults=False):
     Adj_norm,Adj,X,labels = get_data(dataset)
     model = get_model(modelname,dataset,Adj_norm)
     optimizer = optim.Adam(model.parameters(), lr=lr)
@@ -46,17 +50,37 @@ def train(modelname,dataset,lr=0.01,logging=False,epochs=100,show_ROC=False):
         feat_loss=torch.square(model(X)[0]-X)
         fl=[]
         for i in feat_loss:
-            fl.append(np.sqrt(torch.sqrt(torch.sum(i))))
+            fl.append(torch.sqrt(torch.sum(i)))
         struct_loss=torch.square(model(X)[1]-Adj)
         sl=[]
         for i in struct_loss:
-            sl.append(np.sqrt(torch.sqrt(torch.sum(i))))
+            sl.append(torch.sqrt(torch.sum(i)))
         diff=[]
         for i in range(len(feat_loss)):
             diff.append((fl[i]+sl[i])/2)
     fpr, tpr, thresholds = metrics.roc_curve(labels, diff, pos_label=None,drop_intermediate=False)
     auc_score=roc_auc_score(labels, diff)
     print(dataset+" AUC score : ",auc_score)
+    print(model)
+    if saveResults:
+        file_path = "Results/"+dataset+"/results.json"
+        data = {}
+        data[modelname] = {"auc_score":0.0,"model_summary":"fake summary"}
+        if not (path.exists(file_path) and path.isfile(file_path)):
+            f = open(file_path,'x')
+            
+        else:
+            f = open(file_path,'w')
+            if modelname not in data.keys():
+                data[modelname] = {"auc_score":0.0,"model_summary":"fake summary"}
+        data[modelname]["auc_score"]=auc_score
+        print(X.shape[0],X.shape[1])
+        model_summary = summary(model,X,device='cpu')
+        data[modelname]["model_summary"] = str(model_summary)
+        f.write(json.dumps(data))
+        f.close()
+
+
     plt.title(dataset+" AUC_score="+str(auc_score))
     plt.plot(fpr,tpr)
     if show_ROC:

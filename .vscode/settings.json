@@ -1,4 +1,5 @@
 {
     "python.linting.enabled": false,
-    "python.formatting.provider": "black"
+    "python.formatting.provider": "black",
+    "python.pythonPath": "C:\\Users\\avdhe\\anaconda3\\envs\\PyTorch\\python.exe"
 }
