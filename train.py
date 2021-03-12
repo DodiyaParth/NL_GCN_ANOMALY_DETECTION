@@ -69,6 +69,9 @@ def train(modelname,dataset,lr=0.01,logging=False,epochs=100,show_ROC=False,save
             f = open(file_path,'x')
             
         else:
+            f = open(file_path)
+            data = json.load(f)
+            f.close()
             f = open(file_path,'w')
             if modelname not in data.keys():
                 data[modelname] = {"auc_score":0.0,"model_summary":"fake summary"}
