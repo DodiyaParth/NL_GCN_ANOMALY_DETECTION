@@ -1,2 +1,3 @@
 *.mat
 test.ipynb
+__pycache__
