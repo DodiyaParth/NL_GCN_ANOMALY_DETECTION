@@ -14,8 +14,9 @@ from os import path
 from torchsummary import summary
 import time
 import json
+import math
 
-def train(modelname,dataset,lr=0.01,logging=False,epochs=100,show_ROC=False,saveResults=False):
+def train(modelname,dataset,lr=0.01,logging=False,epochs=100,show_ROC=False,saveResults=False,thresholding=False):
     Adj_norm,Adj,X,labels = get_data(dataset)
     model = get_model(modelname,dataset,Adj_norm)
     optimizer = optim.Adam(model.parameters(), lr=lr)
@@ -59,6 +60,15 @@ def train(modelname,dataset,lr=0.01,logging=False,epochs=100,show_ROC=False,save
         for i in range(len(feat_loss)):
             diff.append((fl[i]+sl[i])/2)
     fpr, tpr, thresholds = metrics.roc_curve(labels, diff, pos_label=None,drop_intermediate=False)
+    if thresholding:
+        threshold=thresholds[0]
+        min_d=10
+        for i in range(len(fpr)):
+            distance=math.sqrt((1-fpr[i])**2+(tpr[i])**2)
+            if distance<min_d:
+                min_d=distance
+            threshold=thresholds[i]
+        print("Optimum threshould: "+str(threshold))
     auc_score=roc_auc_score(labels, diff)
     print(dataset+" AUC score : ",auc_score)
     if saveResults:
@@ -77,14 +87,16 @@ def train(modelname,dataset,lr=0.01,logging=False,epochs=100,show_ROC=False,save
                 data[modelname] = {"auc_score":0.0,"model_summary":"fake summary"}
         data[modelname]["auc_score"]=auc_score
         print(X.shape[0],X.shape[1])
-        model_summary = summary(model,X,device='cpu')
+        model_summary = summary(model,(X[0],X[1]),device='cpu')
         data[modelname]["model_summary"] = str(model_summary)
         f.write(json.dumps(data))
         f.close()
 
-
+    fig = plt.figure()
     plt.title(dataset+" AUC_score="+str(auc_score))
     plt.plot(fpr,tpr)
     if show_ROC:
         plt.show()
+    if saveResults:
+        fig.savefig('./Results'+'/'+dataset+'/roc.png')
     return auc_score
