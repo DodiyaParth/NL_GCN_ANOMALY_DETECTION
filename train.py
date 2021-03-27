@@ -80,7 +80,11 @@ def train(modelname,dataset,lr=0.01,logging=False,epochs=100,show_ROC=False,save
             
         else:
             f = open(file_path)
-            data = json.load(f)
+            try:
+                data1 = json.load(f)
+                data =data1
+            except:
+                print("Issues in reading json file")
             f.close()
             f = open(file_path,'w')
             if modelname not in data.keys():
