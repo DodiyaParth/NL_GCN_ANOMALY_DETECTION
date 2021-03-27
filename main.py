@@ -23,8 +23,8 @@ def test3():
     for dataset in datasets:
         for model in models:
             train(model,dataset,logging=False,epochs=160, saveResults=True)
-    for model in models:
-            train(model,'Enron',logging=False,epochs=80, saveResults=True)
+    # for model in models:
+    #         train(model,'Enron',logging=False,epochs=80, saveResults=True)
 
 if __name__=="__main__":
     # test2()
