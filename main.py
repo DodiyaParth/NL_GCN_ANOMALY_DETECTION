@@ -22,9 +22,9 @@ def test_hyperparam_search():
 
     for dataset in datasets:
         for model in models:
-            train(model,dataset,logging=False,epochs=50, saveResults=True)
-    # for model in models:
-    #         train(model,'Enron',logging=False,epochs=80, saveResults=True)
+            train(model,dataset,epochs=150, saveResults=True,optimThreshould=True,filterFraction=0.25)
+    for model in models:
+            train(model,'Enron',epochs=120, saveResults=True,optimThreshould=True,filterFraction=0.25)
 
 if __name__=="__main__":
     # test2()

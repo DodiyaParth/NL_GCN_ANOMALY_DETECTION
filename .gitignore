@@ -1,3 +1,4 @@
 *.mat
 test.ipynb
 __pycache__/*
+output.txt
