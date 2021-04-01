@@ -142,6 +142,8 @@ def get_model(model_name,dataset,Adj_norm):
             return Net(Adj_norm,10,7,5,7,10)
         if dataset=="Disney":
             return Net(Adj_norm,28,15,10,15,28)
+        if dataset=="twitter":
+            return Net(Adj_norm,15,11,7,11,15)
     elif model_name=='N2':
         if dataset=="Enron":
             return Net1(Adj_norm,18,15,12,15,18)
@@ -151,6 +153,8 @@ def get_model(model_name,dataset,Adj_norm):
             return Net1(Adj_norm,10,7,5,7,10)
         if dataset=="Disney":
             return Net1(Adj_norm,28,15,10,15,28)
+        if dataset=="twitter":
+            return Net(Adj_norm,15,11,7,11,15)
     elif model_name=='N3':
         if dataset=="Enron":
             return Net2(Adj_norm,18,15,12,15,18)
@@ -160,6 +164,8 @@ def get_model(model_name,dataset,Adj_norm):
             return Net2(Adj_norm,10,7,5,7,10)
         if dataset=="Disney":
             return Net2(Adj_norm,28,15,10,15,28)
+        if dataset=="twitter":
+            return Net(Adj_norm,15,11,7,11,15)
     else:
         model=None
         if model_name.startswith("DenseNet"):
@@ -180,3 +186,5 @@ def get_model(model_name,dataset,Adj_norm):
             return model(Adj_norm,10,7,5,7,10)
         if dataset=="Disney":
             return model(Adj_norm,28,15,10,15,28)
+        if dataset=="twitter":
+            return Net(Adj_norm,15,11,7,11,15)

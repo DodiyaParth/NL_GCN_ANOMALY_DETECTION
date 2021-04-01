@@ -90,8 +90,8 @@ def train(modelname,dataset,lr=0.01,logging=False,epochs=100,show_ROC=False,save
             if modelname not in data.keys():
                 data[modelname] = {"auc_score":0.0,"model_summary":"fake summary"}
         data[modelname]["auc_score"]=auc_score
-        print(X.shape[0],X.shape[1])
-        model_summary = summary(model,(X[0],X[1]),device='cpu')
+        print(X.shape[0],X.shape[1],X)
+        model_summary = summary(model,torch.ones(X.shape[0],X.shape[1]),device='cpu')
         data[modelname]["model_summary"] = str(model_summary)
         f.write(json.dumps(data))
         f.close()
@@ -103,4 +103,5 @@ def train(modelname,dataset,lr=0.01,logging=False,epochs=100,show_ROC=False,save
         plt.show()
     if saveResults:
         fig.savefig('./Results'+'/'+dataset+'/roc.png')
+    plt.close()
     return auc_score

@@ -18,7 +18,7 @@ def get_data(dataset):
     for cord in data['features'][0]:
         X[cord[0]][cord[1]]=data['features'][1][i]
         i+=1
-    if dataset!='Enron':
+    if dataset!='Enron' and dataset!="twitter":
         X = X/X.max(axis=0)
     X=torch.tensor(X)
 
