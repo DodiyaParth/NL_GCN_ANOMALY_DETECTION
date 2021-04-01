@@ -6,7 +6,8 @@ def test1():
 
 def test2():
     for dataset in ['Disney','Amazon','facebook']:
-        train('N2',dataset,logging=False,epochs=160, saveResults=False)
+        train("N2",dataset,epochs=150, saveResults=True,optimThreshould=True,filterFraction=0.25)
+    train("N2","Enron",epochs=70, saveResults=True,optimThreshould=True,filterFraction=0.25)
 
 def test_hyperparam_search():
     datasets=['Disney','Amazon','facebook']
@@ -27,7 +28,7 @@ def test_hyperparam_search():
             train(model,'Enron',epochs=120, saveResults=True,optimThreshould=True,filterFraction=0.25)
 
 if __name__=="__main__":
-    # test2()
+    test2()
     # train('N2','Enron',logging=False,epochs=10)
     # train('AttConvNet2','Disney',logging=False,epochs=160, saveResults=True)
-    test_hyperparam_search()
+    #test_hyperparam_search()
