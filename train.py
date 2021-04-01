@@ -132,7 +132,7 @@ def train(modelname,dataset,lr=0.01,logging=False,epochs=100,show_ROC=False,save
     plt.plot(fpr,tpr)
     if show_ROC:
         plt.show()
-    # if saveResults:
-    #     fig.savefig('./Results'+'/'+dataset+'/roc.png')
+    if saveResults:
+        fig.savefig('./Results'+'/'+dataset+'/roc.png')
     plt.close()
     return auc_score

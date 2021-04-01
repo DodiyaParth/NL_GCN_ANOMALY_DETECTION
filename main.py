@@ -21,11 +21,11 @@ def test_hyperparam_search():
     models.extend(models3)
     models.extend(models4)
 
-    for dataset in datasets:
-        for model in models:
-            train(model,dataset,epochs=150, saveResults=True,optimThreshould=True,filterFraction=0.25)
+    # for dataset in datasets:
+    #     for model in models:
+    #         train(model,dataset,epochs=150, saveResults=True,optimThreshould=True,filterFraction=0.25)
     for model in models:
-            train(model,'Enron',epochs=120, saveResults=True,optimThreshould=True,filterFraction=0.25)
+            train(model,'twitter',epochs=120, saveResults=False,optimThreshould=True,filterFraction=0.25)
 
 if __name__=="__main__":
     test2()

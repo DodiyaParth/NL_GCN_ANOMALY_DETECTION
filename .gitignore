@@ -1,4 +1,6 @@
 *.mat
 test.ipynb
 __pycache__/*
-output.txt
+data/*
+.vscode/*
+!data/data.zip
