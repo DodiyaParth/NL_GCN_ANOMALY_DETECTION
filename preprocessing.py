@@ -17,6 +17,7 @@ def get_data(dataset):
     i=0
     for cord in data['features'][0]:
         X[cord[0]][cord[1]]=data['features'][1][i]
+        # X[cord[0]][cord[1]]=1
         i+=1
     if dataset!='Enron' and dataset!="twitter":
         X = X/X.max(axis=0)

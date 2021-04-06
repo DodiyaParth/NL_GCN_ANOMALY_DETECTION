@@ -7,7 +7,10 @@ class GCNConv(nn.Module):
     def __init__(self, A, in_channels, out_channels):
         super(GCNConv, self).__init__()
         self.A_hat = A
-        self.W     = nn.Parameter(torch.rand(in_channels,out_channels))
+        w     = torch.empty(in_channels,out_channels)
+        torch.nn.init.xavier_uniform_(w, gain=1.0)
+        self.W = nn.Parameter(w)
+        # self.W     = nn.Parameter(torch.rand(in_channels,out_channels))
     
     def forward(self, X):
         out = torch.mm(torch.mm(self.A_hat, X), self.W)

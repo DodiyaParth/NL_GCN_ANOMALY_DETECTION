@@ -28,6 +28,6 @@ def test_hyperparam_search():
 
 if __name__=="__main__":
     # test2()
-    # train('N2','twitter',logging=False,epochs=160)
+    train('N2','Amazon',logging=False,epochs=100)
     # train('AttConvNet2','Disney',logging=False,epochs=160, saveResults=True)
-    test_hyperparam_search()
+    # test_hyperparam_search()
