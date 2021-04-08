@@ -16,7 +16,7 @@ import time
 import json
 import math
 
-def train(modelname,dataset,lr=0.01,logging=False,epochs=100,show_ROC=False,saveResults=False,optimThreshould=False,filterFraction=0,savePrediction=False):
+def train(modelname,dataset,lr=.5*0.001,logging=False,epochs=100,show_ROC=False,saveResults=False,optimThreshould=False,filterFraction=0,savePrediction=False):
     print()
     Adj_norm,Adj,X,labels = get_data(dataset)
     model = get_model(modelname,dataset,Adj_norm)
@@ -75,27 +75,29 @@ def train(modelname,dataset,lr=0.01,logging=False,epochs=100,show_ROC=False,save
         # print("Optimum threshould: "+str(threshold))
         # print("threshould percentile:",th_ind*100.0/len(thresholds))
     
-    for filterFraction in [0.03*i for i in range(15)]:
-        print("filter fraction:",filterFraction)
-        filterResult=[]
-        if filterFraction!=0:
-            th_ind=(filterFraction)*len(fpr)
-            filterThreshould=thresholds[int(th_ind)]
-            filtered_prediction=[]
-            for loss in diff:
-                if loss>filterThreshould:
-                    filtered_prediction.append(1)
-                else:
-                    filtered_prediction.append(0)
-            prfs=precision_recall_fscore_support(np.reshape(labels,(-1)),filtered_prediction)
-            filterResult.append(str(accuracy_score(np.reshape(labels,(-1)),filtered_prediction)))
-            print("prediction Accuracy: ",accuracy_score(np.reshape(labels,(-1)),filtered_prediction))
-            print("precision",prfs[0])
-            print("recall",prfs[1])
-            if savePrediction:
-                with open('output.txt', 'w') as filehandle:
-                    for listitem in filtered_prediction:
-                        filehandle.write('%s\n' % listitem)
+
+    filterResult=[]
+    if filterFraction!=0:
+        th_ind=(filterFraction)*len(fpr)
+        filterThreshould=thresholds[int(th_ind)]
+        filtered_prediction=[]
+        for loss in diff:
+            if loss>filterThreshould:
+                filtered_prediction.append(1)
+            else:
+                filtered_prediction.append(0)
+        prfs=precision_recall_fscore_support(np.reshape(labels,(-1)),filtered_prediction)
+        filterResult.append(str(accuracy_score(np.reshape(labels,(-1)),filtered_prediction)))
+        print("Total Nodes:",len(filtered_prediction))
+        print("Labeled anomalies:",sum(labels))
+        print("Anomalies predicted:",sum(filtered_prediction))
+        print("prediction Accuracy: ",accuracy_score(np.reshape(labels,(-1)),filtered_prediction))
+        print("precision",prfs[0])
+        print("recall",prfs[1])
+        if savePrediction:
+            with open('output.txt', 'w') as filehandle:
+                for listitem in filtered_prediction:
+                    filehandle.write('%s\n' % listitem)
 
     auc_score=roc_auc_score(labels, diff)
     print(dataset+" AUC score : ",auc_score)
