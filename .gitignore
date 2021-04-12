@@ -1,1 +1,6 @@
 *.mat
+test.ipynb
+__pycache__/*
+data/*
+.vscode/*
+!data/data.zip
