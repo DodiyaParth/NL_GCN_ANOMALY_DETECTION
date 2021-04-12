@@ -20,7 +20,10 @@ def get_data(dataset):
         i+=1
     # if dataset=='Amazon':
     #     X = X/X.max(axis=0)
-    X=(X-X.mean(axis=0))/(np.sqrt(X.var(axis=0)+0.001))
+    if dataset=="Amazon" or dataset=="Disney":
+        X=(X-X.mean(axis=0)+1)/(np.sqrt(X.var(axis=0)+0.001))
+    else:
+        X=(X-X.mean(axis=0))/(np.sqrt(X.var(axis=0)+0.001))
     X=torch.tensor(X)
 
     Adj=data['adj'].toarray()
