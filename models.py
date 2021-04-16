@@ -112,6 +112,41 @@ class Net2(torch.nn.Module):
         Att = torch.relu(Att)
         return Att, A
 
+class Net3(torch.nn.Module):
+    def __init__(self, A, nfeat, nhid1, nhid2, nhid3, nout):
+        super(Net3, self).__init__()
+        self.encGcn1 = GCNConv(A, nfeat, nhid1)
+        self.encGcn2 = GCNConv(A, nhid1, nhid2)
+        self.encNlgcn1 = NLGCN(nhid1)
+        self.encNlgcn2 = NLGCN(nhid2)
+        self.attGcn1 = GCNConv(A, nhid2, nhid1)
+        self.attNlGcn1 = NLGCN(nhid1)
+        self.attGcn2 = GCNConv(A, nhid1, nfeat)
+        self.strGcn1 = GCNConv(A, nhid2, nhid1)
+ 
+    def forward(self, X):
+        H = self.encGcn1(X)
+        H = torch.relu(H)
+ 
+        H = self.encNlgcn1(H)
+        # H = torch.relu(H)
+ 
+        H = self.encGcn2(H)
+        H = torch.relu(H)
+ 
+        H = self.encNlgcn2(H)
+        # H = torch.relu(H)
+ 
+        A = self.strGcn1(H)
+        A = torch.relu(A)
+        A = torch.mm(A, A.T)
+        A = torch.sigmoid(A)
+ 
+        Att = self.attGcn1(H)
+        Att = torch.relu(Att)
+        Att = self.attGcn2(Att)
+        Att = torch.relu(Att)
+        return Att, A
 
 def get_model(model_name, dataset, Adj_norm):
     if model_name == "N1":
@@ -169,6 +204,17 @@ def get_model(model_name, dataset, Adj_norm):
             return Net2(Adj_norm, 28, 64, 32, 64, 28)
         if dataset == "twitter":
             return Net2(Adj_norm, 15, 256, 64, 256, 15)
+    elif model_name == "N6":
+        if dataset == "Enron":
+            return Net3(Adj_norm, 18, 256, 64, 256, 18)
+        if dataset == "Amazon":
+            return Net3(Adj_norm, 21, 256, 64, 256, 21)
+        if dataset == "facebook":
+            return Net3(Adj_norm, 10, 256, 64, 256, 10)
+        if dataset == "Disney":
+            return Net3(Adj_norm, 28, 64, 32, 64, 28)
+        if dataset == "twitter":
+            return Net3(Adj_norm, 15, 256, 64, 256, 15)
     else:
         model = None
         if model_name.startswith("DenseNet"):
