@@ -29,8 +29,8 @@ def test_hyperparam_search():
             train(model,'twitter',epochs=120, saveResults=False,optimThreshould=True,filterFraction=0.25)
 
 if __name__=="__main__":
-    train("N5","twitter", lr=.0133*0.001, epochs=200, saveResults=True,optimThreshould=True,filterFraction=0.25)  #mean=0
-    train("N5","facebook", lr=.5*0.001, epochs=100, saveResults=True,optimThreshould=True,filterFraction=0.25)    #mean=0
-    train("N5","Amazon", lr=.5*0.01, epochs=100, saveResults=True,optimThreshould=True,filterFraction=0.25)         #mean=1
-    train("N5","Disney", lr=.5*0.01, epochs=100, saveResults=True,optimThreshould=True,filterFraction=0.25)         #mean=1
+    train("N6","twitter", lr=.0133*0.001, epochs=200, saveResults=True,optimThreshould=True,filterFraction=0.25)  #mean=0
+    train("N6","facebook", lr=.5*0.001, epochs=100, saveResults=True,optimThreshould=True,filterFraction=0.25)    #mean=0
+    train("N6","Amazon", lr=.5*0.01, epochs=100, saveResults=True,optimThreshould=True,filterFraction=0.25)         #mean=1
+    train("N6","Disney", lr=.5*0.001, epochs=300, saveResults=True,optimThreshould=True,filterFraction=0.25)         #mean=1
     # train("N5","Enron", lr=0.1, epochs=40, saveResults=True,optimThreshould=True,filterFraction=0.25) 
